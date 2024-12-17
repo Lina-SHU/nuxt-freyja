@@ -1,10 +1,6 @@
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue';
-
 import { DatePicker } from 'v-calendar';
-
 import { useScreens } from 'vue-screen-utils';
-
 const { $showModal } = useNuxtApp();
 
 const modal = ref(null);
@@ -33,6 +29,10 @@ const props = defineProps({
   dateTime: {
     type: Object,
     required: true,
+  },
+  roomInfo: {
+    type: Object,
+    required: true
   }
 })
 
@@ -75,7 +75,6 @@ const daysCount = computed(() => {
   return differenceDay;
 });
 
-const MAX_BOOKING_PEOPLE = 10;
 const bookingPeopleMobile = ref(1);
 
 
@@ -102,13 +101,13 @@ const confirmDate = () => {
   }
 
   closeModal();
-}
+};
 
 const clearDate = () => {
   tempDate.date.start = null;
   tempDate.date.end = null;
   tempDate.key++;
-}
+};
 
 
 </script>
@@ -234,7 +233,7 @@ const clearDate = () => {
               選擇人數
             </h6>
             <p className="mb-4 text-neutral-80 fs-8 fw-medium">
-              此房型最多供 4 人居住，不接受寵物入住。
+              此房型最多供 {{ roomInfo.maxPeople }} 人居住，不接受寵物入住。
             </p>
 
             <div class="d-flex align-items-center gap-4">
@@ -263,7 +262,7 @@ const clearDate = () => {
                 :class="{
                   'disabled bg-neutral-40':
                     bookingPeopleMobile ===
-                    MAX_BOOKING_PEOPLE
+                    roomInfo.maxPeople
                 }"
                 class="btn btn-neutral-0 p-4 border border-neutral-40 rounded-circle"
                 type="button"

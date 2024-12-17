@@ -65,16 +65,19 @@ const onSubmit = async (value = {}, { resetForm }) => {
         }
       }
     };
-    const { data } = await useAPI('/orders/', {
-      body: bookConfirmInfo
+    const { data } = await useAPI('/orders', {
+      body: bookConfirmInfo,
+      method: 'post'
     });
+    if (!data) return;
+
     $swal.fire({
         position: "center",
         icon: 'success',
         title: '訂房成功！'
     });
     resetForm();
-    navigateTo(`/booking-confirmation/${data.result._id}`);
+    navigateTo(`/booking-confirmation/${data._id}`);
   } finally {
     isLoading.value = false;
   }

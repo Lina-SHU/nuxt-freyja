@@ -389,15 +389,15 @@ const goToBooking = () => {
 
         <template v-else>
           <div class="d-flex flex-column gap-1">
-            <small class="text-neutral-80 fw-medium">ＮＴ$ {{ roomInfo.price }} / {{ daysCount }} 晚 / {{ bookingPeople }} 人</small>
+            <small class="text-neutral-80 fw-medium">ＮＴ$ {{ roomInfo.price * Number(daysCount.value) }} / {{ daysCount }} 晚 / {{ bookingPeople }} 人</small>
             <span class="text-neutral fs-9 fw-medium text-decoration-underline">{{ daysFormatOnMobile(bookingDate.date?.start) }} - {{ daysFormatOnMobile(bookingDate.date?.end) }}</span>
           </div>
-          <NuxtLink
-            :to="`/rooms/${roomInfo._id}/booking`"
+          <button
             class="btn btn-primary-100 px-12 py-4 text-neutral-0 fw-bold rounded-3"
+            @click.prevent="goToBooking"
           >
             立即預訂
-          </NuxtLink>
+          </button>
         </template>
       </div>
     </section>
@@ -405,6 +405,7 @@ const goToBooking = () => {
     <DatePickerModal
       ref="datePickerModal"
       :date-time="bookingDate"
+      :roomInfo="roomInfo"
       @handle-date-change="handleDateChange"
     />
   </main>
