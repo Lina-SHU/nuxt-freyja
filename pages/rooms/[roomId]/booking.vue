@@ -1,5 +1,6 @@
 <script setup>
 import { useRouter } from 'vue-router';
+const { $swal } = useNuxtApp();
 import BookingLoading from '@/components/rooms/BookingLoading.vue';
 import dayjs from 'dayjs';
 const locale = {
@@ -38,20 +39,22 @@ const { bookingInfo } = storeToRefs(bookingStore);
 const goBack = () => {
   router.back();
 }
-
+if(!bookingInfo.value){
+    navigateTo('/rooms');
+}
+// 送出訂單
 const confirmBooking = () => {
   submitButtonRef.value.click();
 };
-
 const onSubmit = async (value = {}, { resetForm }) => {
   try {
     isLoading.value = true;
 
     const bookConfirmInfo = {
       roomId: route.params.roomId,
-      checkInDate: dayjs(bookingInfo.checkInDate).format('YYYY/MM/DD'),
-      checkOutDate: dayjs(bookingInfo.checkOutDate).format('YYYY/MM/DD'),
-      peopleNum: bookingInfo.peopleNum,
+      checkInDate: dayjs(bookingInfo.value.checkInDate).format('YYYY/MM/DD'),
+      checkOutDate: dayjs(bookingInfo.value.checkOutDate).format('YYYY/MM/DD'),
+      peopleNum: bookingInfo.value.peopleNum,
       userInfo: {
         name: value['姓名'],
         phone: value['手機號碼'],
@@ -71,7 +74,7 @@ const onSubmit = async (value = {}, { resetForm }) => {
         title: '訂房成功！'
     });
     resetForm();
-    navigateTo(`/booking-confirmation/${data._id}`);
+    navigateTo(`/booking-confirmation/${data.result._id}`);
   } finally {
     isLoading.value = false;
   }
@@ -119,10 +122,10 @@ const onSubmit = async (value = {}, { resetForm }) => {
                       訂房日期
                     </h3>
                     <p class="mb-2 fw-medium">
-                      入住：{{ dayjs(bookingInfo.checkInDate).format('MM 月 DD 日 dddd') }}
+                      入住：{{ bookingInfo?.checkInDate && dayjs(bookingInfo?.checkInDate).format('MM 月 DD 日 dddd') }}
                     </p>
                     <p class="mb-0 fw-medium">
-                      退房：{{ dayjs(bookingInfo.checkOutDate).format('MM 月 DD 日 dddd') }}
+                      退房：{{ bookingInfo?.checkOutDate && dayjs(bookingInfo?.checkOutDate).format('MM 月 DD 日 dddd') }}
                     </p>
                   </div>
                 </div>
@@ -132,7 +135,7 @@ const onSubmit = async (value = {}, { resetForm }) => {
                       房客人數
                     </h3>
                     <p class="mb-0 fw-medium">
-                      {{ bookingInfo.peopleNum }} 人
+                      {{ bookingInfo?.peopleNum }} 人
                     </p>
                   </div>
                 </div>
@@ -360,7 +363,7 @@ const onSubmit = async (value = {}, { resetForm }) => {
             >
               <img
                 class="img-fluid rounded-3"
-                :src="roomInfo.imageUrl"
+                :src="roomInfo?.imageUrl"
                 alt="room-a"
               >
 
@@ -375,10 +378,10 @@ const onSubmit = async (value = {}, { resetForm }) => {
                       class="ms-2 me-1 text-neutral-80"
                       icon="material-symbols:close"
                     />
-                    <span class="text-neutral-80">{{ bookingInfo.daysCount }} 晚</span>
+                    <span class="text-neutral-80">{{ bookingInfo?.daysCount }} 晚</span>
                   </div>
                   <span class="fw-medium">
-                    NT$ {{ roomInfo.price * bookingInfo.daysCount }}
+                    NT$ {{ roomInfo.price * bookingInfo?.daysCount }}
                   </span>
                 </div>
                 <!-- <div class="d-flex justify-content-between align-items-center fw-medium">
@@ -395,7 +398,7 @@ const onSubmit = async (value = {}, { resetForm }) => {
                     總價
                   </p>
                   <span>
-                    NT$ {{ roomInfo.price * bookingInfo.daysCount }}
+                    NT$ {{ roomInfo.price * bookingInfo?.daysCount }}
                   </span>
                 </div>
               </div>

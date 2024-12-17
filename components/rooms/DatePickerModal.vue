@@ -73,7 +73,7 @@ const daysCount = computed(() => {
   const differenceDay = Math.round(differenceTime / (1000 * 60 * 60 * 24));
 
   return differenceDay;
-})
+});
 
 const MAX_BOOKING_PEOPLE = 10;
 const bookingPeopleMobile = ref(1);
