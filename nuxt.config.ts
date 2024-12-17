@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   css: [
     '@/assets/stylesheets/all.scss'
   ],
-  modules: ["@pinia/nuxt"],
+  modules: ["@pinia/nuxt", "@vee-validate/nuxt"],
   vite: {
     css: {
       preprocessorOptions: {
