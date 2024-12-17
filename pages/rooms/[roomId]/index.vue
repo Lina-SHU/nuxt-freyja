@@ -1,6 +1,7 @@
 <script setup>
 import DatePickerModal from '@/components/rooms/DatePickerModal.vue';
 const datePickerModal = ref(null);
+const { $swal } = useNuxtApp();
 
 const openModal = () => {
   datePickerModal.value.openModal();
@@ -10,9 +11,7 @@ const openModal = () => {
 const route = useRoute();
 const { data: roomInfo } = await useAPI(`/rooms/${route.params.roomId}`);
 
-const MAX_BOOKING_PEOPLE = 10;
 const bookingPeople = ref(1);
-
 const daysCount = ref(0);
 
 const daysFormatOnMobile = (date) => date?.split('-').slice(1, 3).join(' / ');
@@ -25,7 +24,7 @@ const formatDate = (date) => {
 
 const currentDate = new Date();
 
-const bookingDate = reactive({
+const bookingDate = ref({
   date: {
     start: formatDate(currentDate),
     end: null,
@@ -36,14 +35,33 @@ const bookingDate = reactive({
 
 const handleDateChange = (bookingInfo) => {
   const { start, end } = bookingInfo.date;
-  bookingDate.date.start = start;
-  bookingDate.date.end = end;
+  bookingDate.value.date.start = start;
+  bookingDate.value.date.end = end;
 
   bookingPeople.value = bookingInfo?.people || 1;
   daysCount.value = bookingInfo.daysCount;
 };
 
-
+const bookingStore = useBookingStore();
+const goToBooking = () => {
+  // 檢查是否有填入入住跟退房日期
+  if (!bookingDate.value.date.start || !bookingDate.value.date.end) {
+    $swal.fire({
+        position: "center",
+        icon: 'error',
+        title: '請輸入入住及退房日期'
+    });
+    return;
+  };
+  bookingStore.setBookingInfo({
+    roomId: route.params.roomId,
+    checkInDate: bookingDate.value.date.start,
+    checkOutDate: bookingDate.value.date.end,
+    peopleNum: bookingPeople.value,
+    daysCount: daysCount.value
+  });
+  navigateTo(`/rooms/${route.params.roomId}/booking`);
+};
 </script>
 
 <template>
@@ -343,16 +361,15 @@ const handleDateChange = (bookingInfo) => {
                   </div>
                 </div>
               </div>
-
               <h5 class="mb-0 text-primary-100 fw-bold">
-                NT$ {{ roomInfo.price }}
+                NT$ {{ daysCount.value ? roomInfo.price * Number(daysCount.value) : roomInfo.price}}
               </h5>
-              <NuxtLink
-                :to="`/rooms/${roomInfo._id}/booking`"
+              <button
                 class="btn btn-primary-100 py-4 text-neutral-0 fw-bold rounded-3"
+                @click.prevent="goToBooking"
               >
                 立即預訂
-              </NuxtLink>
+              </button>
             </div>
           </div>
         </div>
