@@ -1,5 +1,6 @@
 <script setup>
-import { Icon } from '@iconify/vue';
+const accountStore = useAccountStore();
+const { accountInfo } = storeToRefs(accountStore);
 </script>
 
 <template>
@@ -44,7 +45,7 @@ import { Icon } from '@iconify/vue';
             <ul class="d-md-none navbar-nav gap-4 ms-auto fw-bold">
               <li class="nav-item">
                 <NuxtLink
-                  to="/"
+                  to="/rooms"
                   class="nav-link p-4 text-neutral-0"
                 >
                   客房旅宿
@@ -52,19 +53,19 @@ import { Icon } from '@iconify/vue';
               </li>
               <li class="d-none d-md-block nav-item">
                 <NuxtLink
-                  to="/"
+                  :to="`/user/${accountInfo?._id}/profile`"
                   class="nav-link d-flex gap-2 p-4 text-neutral-0"
                 >
                   <Icon
                     class="fs-5"
                     icon="mdi:account-circle-outline"
                   />
-                  Jessica
+                  {{ accountInfo?.name }}
                 </NuxtLink>
               </li>
               <li class="d-md-none nav-item">
                 <NuxtLink
-                  to="/"
+                  to="/account/login"
                   class="nav-link p-4 text-neutral-0"
                 >
                   會員登入
@@ -72,7 +73,7 @@ import { Icon } from '@iconify/vue';
               </li>
               <li class="nav-item">
                 <NuxtLink
-                  to="/"
+                  to="/rooms"
                   class="btn btn-primary-100 px-8 py-4 text-white fw-bold border-0 rounded-3"
                 >
                   立即訂房

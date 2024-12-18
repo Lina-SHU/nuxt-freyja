@@ -7,15 +7,9 @@ export const useAPI = (url,options) => {
       const { result } = response;
       return result;
     },
-    options: {
-      ...options,
-      headers: useRequestHeaders(['auth'])
-    },
+    ...options,
     async onRequest({ request, options }) {
-      
-    },
-    async onResponse({ request, response, options }) {
-      console.log('[fetch response]')
+      options.headers.set('Authorization', useCookie('auth').value);
     },
     async onResponseError({ request, response, options }) {
       const { message } = response._data;

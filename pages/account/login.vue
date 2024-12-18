@@ -2,13 +2,14 @@
 const { $swal } = useNuxtApp();
 const loginRef = ref(null);
 const runtimeConfig = useRuntimeConfig();
+const accountStore = useAccountStore();
 
 const onSubmit = async (value = {}, { resetForm }) => {
   const info = {
     email: value['電子信箱'],
     password: value['密碼']
   };
-  const { token } = await $fetch('/user/login', {
+  const { token, result } = await $fetch('/user/login', {
       method: 'post',
       body: { ...info },
       baseURL: runtimeConfig.public.apiBase,
@@ -25,7 +26,7 @@ const onSubmit = async (value = {}, { resetForm }) => {
      path: '/'
   });
   auth.value = token;
-
+  accountStore.setAccountInfo(result);
   $swal.fire({
       position: "center",
       icon: 'success',

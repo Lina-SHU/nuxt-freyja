@@ -1,12 +1,11 @@
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from 'vue';
-import { Icon } from '@iconify/vue';
-
 const route = useRoute();
 const transparentBgRoute = ['home', 'rooms'];
 
 const isTransparentRoute = computed(() => transparentBgRoute.includes(route.name));
-
+const auth = useCookie('auth');
+const accountStore = useAccountStore();
+const { accountInfo } = storeToRefs(accountStore);
 
 const isScrolled = ref(false);
 
@@ -22,6 +21,10 @@ onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll);
 });
 
+const logout = () => {
+  auth.value = '';
+  navigateTo('/');
+};
 </script>
 
 <template>
@@ -87,7 +90,7 @@ onUnmounted(() => {
                     class="fs-5"
                     icon="mdi:account-circle-outline"
                   />
-                  Jessica
+                  {{ accountInfo?.name }}
                 </button>
                 <ul
                   class="dropdown-menu py-3 overflow-hidden"
@@ -95,7 +98,7 @@ onUnmounted(() => {
                 >
                   <li>
                     <NuxtLink
-                      to="/user/id/profile"
+                      :to="`/user/${accountInfo?._id}/profile`"
                       class="dropdown-item px-6 py-4"
                     >
                     我的帳戶
@@ -105,6 +108,7 @@ onUnmounted(() => {
                     <a
                       class="dropdown-item px-6 py-4"
                       href="#"
+                      @click.prevent="logout"
                     >登出</a>
                   </li>
                 </ul>
@@ -120,7 +124,7 @@ onUnmounted(() => {
             </li>
             <li class="nav-item">
               <NuxtLink
-                to="/rooms/id/booking"
+                to="/rooms"
                 class="btn btn-primary-100 px-8 py-4 text-white fw-bold border-0 rounded-3"
               >
                 立即訂房
@@ -221,6 +225,4 @@ header.scrolled {
   --bs-dropdown-link-active-color: #fff;
   --bs-dropdown-link-active-bg: #BF9D7D;
 }
-
-
 </style>
