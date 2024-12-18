@@ -50,7 +50,7 @@ const resetMonDay = () => {
   profileRef.value.setFieldValue('月', '');
   profileRef.value.setFieldValue('日', '');
 };
-
+const resetDay = () => { profileRef.value.setFieldValue('日', '')};
 const dayList = computed(() => {
   if (!profileRef.value) return;
   const month = profileRef.value.values['月'];
@@ -71,8 +71,6 @@ const dayList = computed(() => {
     return 0;
   }
 });
-
-const resetDay = () => { profileRef.value.setFieldValue('日', '')};
 // 修改密碼
 const changeMima = async (value = {}, { resetForm }) => {
   const mimaInfo = {
