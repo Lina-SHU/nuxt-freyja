@@ -16,4 +16,7 @@ export const useBookingStore = defineStore('booking', () => {
         userInfo,
         setUserInfo
     }
+},
+{
+    persist: true
 });

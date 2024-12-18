@@ -1,5 +1,4 @@
 <script setup>
-import { useRouter } from 'vue-router';
 const { $swal } = useNuxtApp();
 import BookingLoading from '@/components/rooms/BookingLoading.vue';
 import dayjs from 'dayjs';
