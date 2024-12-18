@@ -7,21 +7,25 @@ export const useAPI = (url,options) => {
       const { result } = response;
       return result;
     },
-    ...options,
+    options: {
+      ...options,
+      headers: useRequestHeaders(['auth'])
+    },
     async onRequest({ request, options }) {
-      console.log('[fetch request]')
+      
     },
     async onResponse({ request, response, options }) {
       console.log('[fetch response]')
     },
     async onResponseError({ request, response, options }) {
+      const { message } = response._data;
+      $swal.fire({
+        position: "center",
+        icon: 'error',
+        title: message
+      });
       if (response.status === 403) {
-        $swal.fire({
-            position: "center",
-            icon: 'error',
-            title: response._data.message
-        });
-        return navigateTo('/account/login');
+        await nuxtApp.runWithContext(() => navigateTo('/account/login'))
       }
     }
   })

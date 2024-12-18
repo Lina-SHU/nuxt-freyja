@@ -1,4 +1,41 @@
 <script setup>
+const { $swal } = useNuxtApp();
+const loginRef = ref(null);
+const runtimeConfig = useRuntimeConfig();
+
+const onSubmit = async (value = {}, { resetForm }) => {
+  const info = {
+    email: value['電子信箱'],
+    password: value['密碼']
+  };
+  const { token } = await $fetch('/user/login', {
+      method: 'post',
+      body: { ...info },
+      baseURL: runtimeConfig.public.apiBase,
+      onResponseError({ request, response, options }) {
+          const { message } = response._data;
+          $swal.fire({
+              position: "center",
+              icon: 'error',
+              title: message
+          });
+      }
+  });
+  const auth = useCookie('auth', {
+     path: '/'
+  });
+  auth.value = token;
+
+  $swal.fire({
+      position: "center",
+      icon: 'success',
+      title: '登入成功！',
+      showConfirmButton: false,
+      timer: 1500
+  });
+  resetForm();
+  navigateTo(`/`);
+};
 </script>
 
 <template>
@@ -12,8 +49,8 @@
           立即開始旅程
         </h1>
       </div>
-  
-      <form class="mb-10">
+      
+      <Form @submit="onSubmit" ref="loginRef" v-slot="{ errors }" class="mb-10">
         <div class="mb-4 fs-8 fs-md-7">
           <label
             class="mb-2 text-neutral-0 fw-bold"
@@ -21,13 +58,17 @@
           >
             電子信箱
           </label>
-          <input
-            id="email"
-            class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
-            value="jessica@sample.com"
-            placeholder="請輸入信箱"
-            type="email"
-          >
+          <Field name="電子信箱" v-slot="{ field }" rules="required|email">
+            <input
+              id="email"
+              type="email"
+              v-bind="field"
+              class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
+              :class="{ 'is-invalid': errors['電子信箱'] }"
+              placeholder="請輸入信箱"
+            >
+            <ErrorMessage name="電子信箱" class="invalid-feedback" />
+          </Field>
         </div>
         <div class="mb-4 fs-8 fs-md-7">
           <label
@@ -36,15 +77,19 @@
           >
             密碼
           </label>
-          <input
-            id="password"
-            class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
-            value="jessica@sample.com"
-            placeholder="請輸入密碼"
-            type="password"
-          >
+          <Field name="密碼" v-slot="{ field }" rules="required|isMima">
+            <input
+              id="password"
+              type="password"
+              v-bind="field"
+              class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
+              placeholder="請輸入密碼"
+              :class="{ 'is-invalid': errors['密碼'] }"
+            >
+            <ErrorMessage name="密碼" class="invalid-feedback" />
+          </Field>
         </div>
-        <div class="d-flex justify-content-between align-items-center mb-10 fs-8 fs-md-7">
+        <!-- <div class="d-flex justify-content-between align-items-center mb-10 fs-8 fs-md-7">
           <div class="form-check d-flex align-items-end gap-2 text-neutral-0">
             <input
               id="remember"
@@ -65,14 +110,14 @@
           >
             忘記密碼？
           </button>
-        </div>
+        </div> -->
         <button
           class="btn btn-primary-100 w-100 py-4 text-neutral-0 fw-bold"
-          type="button"
+          type="submit"
         >
           會員登入
         </button>
-      </form>
+      </Form>
   
       <p class="mb-0 fs-8 fs-md-7">
         <span class="me-2 text-neutral-0 fw-medium">沒有會員嗎？</span>

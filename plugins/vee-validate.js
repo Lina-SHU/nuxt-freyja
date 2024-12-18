@@ -19,6 +19,15 @@ export default defineNuxtPlugin((nuxtApp) => {
         );
     });
 
+    // 自訂驗證規則(密碼)
+    defineRule("isMima", (value) => {
+        const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+        return (
+          regex.test(value) ||
+          "請輸入至少8位的英數字"
+        );
+    });
+
     // 設定多國語系與驗證訊息
     configure({
         // 載入繁體中文的設定檔，產生繁體中文的驗證訊息
