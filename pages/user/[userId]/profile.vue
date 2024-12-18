@@ -1,5 +1,7 @@
 <script setup>
 import dayjs from 'dayjs';
+const { $swal } = useNuxtApp();
+const route = useRoute();
 const changeMimaRef = ref(null);
 const profileRef = ref(null);
 
@@ -50,14 +52,15 @@ const resetMonDay = () => {
 };
 
 const dayList = computed(() => {
-  const month = profileRef.value.getValues('月');
-  const year = Number(profileRef.value.getValues('年')); 
+  if (!profileRef.value) return;
+  const month = profileRef.value.values['月'];
+  const year = profileRef.value.values['年']; 
   // 大月. 小月
-  if (["1", "3", "5", "7", "8", "10", "12"].includes(month)) {
+  if ([1, 3, 5, 7, 8, 10, 12].includes(month)) {
     return 31;
-  } else if (["4", "6", "9", "11"].includes(month)) {
+  } else if ([4, 6, 9, 11].includes(month)) {
     return 30;
-  } else if (month === "2") {
+  } else if (month === 2) {
     // 判斷閏年條件
     if ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) {
       return 29;
@@ -73,15 +76,14 @@ const resetDay = () => { profileRef.value.setFieldValue('日', '')};
 // 修改密碼
 const changeMima = async (value = {}, { resetForm }) => {
   const mimaInfo = {
-    email: userInfo.value.email,
-    code: value['舊密碼'],
+    userId: route.params.userId,
+    oldPassword: value['舊密碼'],
     newPassword: value['新密碼']
   }
-  const { data } = await useAPI('/user/forgot', {
+  const { data } = await useAPI('/user', {
       body: mimaInfo,
-      method: 'post'
+      method: 'put'
   });
-
   if (!data) return;
   $swal.fire({
       position: "center",
@@ -93,8 +95,34 @@ const changeMima = async (value = {}, { resetForm }) => {
 };
 
 // 修改個人資訊
-const editProfile = () => {
+const editProfile = async (value = {}, { resetForm }) => {
+  const info = {
+    userId: route.params.userId,
+    name: value['姓名'],
+    phone: value['手機號碼'],
+    birthday: `${value['年']}/${value['月']}/${value['日']}`,
+    address: { zipcode: value['行政區'], detail: value['詳細地址'] }
+  };
+  const { data } = await useAPI('/user', {
+      body: info,
+      method: 'put'
+  });
 
+  if (!data) return;
+  $swal.fire({
+      position: "center",
+      icon: 'success',
+      title: '更新成功！'
+  });
+  distinctList.forEach((city) => {
+    city.districts.forEach((town) => {
+      if (town.zip === value['行政區']) {
+        userInfo.value.address.city = city.name;
+        userInfo.value.address.county = town.name;
+      }
+    })
+  });
+  isEditProfile.value = false;
 };
 </script>
 
@@ -243,7 +271,7 @@ const editProfile = () => {
               <div class="fs-8 fs-md-7">
                 <label
                   class="form-label"
-                  :class="{'fw-bold text-neutral-100': isEditProfile, 'fw-medium text-neutral-80': !isEditProfile}"
+                  :class="{'fw-bold text-neutral-100': isEditProfile, 'text-neutral-80': !isEditProfile}"
                   for="phone"
                 >
                   手機號碼
@@ -277,34 +305,42 @@ const editProfile = () => {
                   class="d-flex gap-2"
                   :class="{'d-none': !isEditProfile}"
                 >
-                  <Field name="年" as="select" class="form-select p-4 text-neutral-80 fw-medium rounded-3" :class="{ 'is-invalid': errors['年'] }" rules="required" @change="resetMonDay">
-                    <option
-                      v-for="year in 65"
-                      :key="year"
-                      :value="year"
-                    >
-                      {{ year }} 年
-                    </option>
+                  <div class="flex-fill">
+                    <Field name="年" as="select" class="form-select p-4 text-neutral-80 fw-medium rounded-3" :class="{ 'is-invalid': errors['年'] }" rules="required" @change="resetMonDay">
+                      <option
+                        v-for="year in 65"
+                        :key="year"
+                        :value="year + 1958"
+                      >
+                        {{ year + 1958 }} 年
+                      </option>
+                    </Field>
                     <ErrorMessage name="年" class="invalid-feedback" />
-                  </Field>
-                  <Field name="月" as="select" class="form-select p-4 text-neutral-80 fw-medium rounded-3" :class="{ 'is-invalid': errors['月'] }" rules="required" @change="resetDay">
-                    <option
-                      v-for="month in 12"
-                      :key="month"
-                      :value="month"
-                    >
-                      {{ month }} 月
-                    </option>
-                  </Field>
-                  <Field name="日" as="select" class="form-select p-4 text-neutral-80 fw-medium rounded-3" :class="{ 'is-invalid': errors['日'] }" rules="required">
-                    <option
-                      v-for="day in dayList"
-                      :key="day"
-                      :value="day"
-                    >
-                      {{ day }} 日
-                    </option>
-                  </Field>
+                  </div>
+                  <div class="flex-fill">
+                    <Field name="月" as="select" class="form-select p-4 text-neutral-80 fw-medium rounded-3" :class="{ 'is-invalid': errors['月'] }" rules="required" @change="resetDay">
+                      <option
+                        v-for="month in 12"
+                        :key="month"
+                        :value="month"
+                      >
+                        {{ month }} 月
+                      </option>
+                    </Field>
+                    <ErrorMessage name="月" class="invalid-feedback" />
+                  </div>
+                  <div class="flex-fill">
+                    <Field name="日" as="select" class="form-select p-4 text-neutral-80 fw-medium rounded-3" :class="{ 'is-invalid': errors['日'] }" rules="required">
+                      <option
+                        v-for="day in dayList"
+                        :key="day"
+                        :value="day"
+                      >
+                        {{ day }} 日
+                      </option>
+                    </Field>
+                    <ErrorMessage name="日" class="invalid-feedback" />
+                  </div>
                 </div>
               </div>
     
@@ -324,16 +360,20 @@ const editProfile = () => {
                   <div
                     class="d-flex gap-2 mb-2"
                   >
-                    <Field name="縣市" as="select" class="form-select p-4 text-neutral-80 fw-medium rounded-3" :class="{ 'is-invalid': errors['縣市'] }" rules="required" @change="resetTown">
-                      <option selected disabled value="">請選擇縣市</option>
-                      <option v-for="city in cityList" :key="city" :value="city">{{ city }}</option>
-                    </Field>
-                    <ErrorMessage name="縣市" class="invalid-feedback" />
-                    <Field name="行政區" as="select" class="form-select p-4 text-neutral-80 fw-medium rounded-3" :class="{ 'is-invalid': errors['行政區'] }" rules="required">
-                      <option selected disabled value="">請選擇行政區</option>
-                      <option v-for="town in townList" :key="town.zip" :value="town.zip">{{ town.name }}</option>
+                    <div class="flex-fill">
+                      <Field name="縣市" as="select" class="form-select p-4 text-neutral-80 fw-medium rounded-3" :class="{ 'is-invalid': errors['縣市'] }" rules="required" @change="resetTown">
+                        <option selected disabled value="">請選擇縣市</option>
+                        <option v-for="city in cityList" :key="city" :value="city">{{ city }}</option>
+                      </Field>
+                      <ErrorMessage name="縣市" class="invalid-feedback" />
+                    </div>
+                    <div class="flex-fill">
+                      <Field name="行政區" as="select" class="form-select p-4 text-neutral-80 fw-medium rounded-3" :class="{ 'is-invalid': errors['行政區'] }" rules="required">
+                        <option selected disabled value="">請選擇行政區</option>
+                        <option v-for="town in townList" :key="town.zip" :value="town.zip">{{ town.name }}</option>
+                      </Field>
                       <ErrorMessage name="行政區" class="invalid-feedback" />
-                    </Field>
+                    </div>
                   </div>
                   <Field name="詳細地址" v-slot="{ field }" rules="required">
                     <input
@@ -351,7 +391,7 @@ const editProfile = () => {
             </div>
             <button
               :class="{'d-none': isEditProfile}"
-              class="btn btn-outline-primary-100 align-self-start px-8 py-4 rounded-3"
+              class="btn btn-outline-primary-100 align-self-start px-8 py-4 rounded-3 mt-3"
               type="button"
               @click="isEditProfile = !isEditProfile"
             >
@@ -360,7 +400,7 @@ const editProfile = () => {
     
             <button
               :class="{'d-none': !isEditProfile}"
-              class="btn btn-neutral-40 align-self-md-start px-8 py-4 text-neutral-60 rounded-3"
+              class="btn btn-neutral-40 align-self-md-start px-8 py-4 text-neutral-60 rounded-3 mt-3"
               type="submit"
             >
               儲存設定

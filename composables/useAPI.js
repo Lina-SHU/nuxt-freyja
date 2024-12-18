@@ -19,7 +19,7 @@ export const useAPI = (url,options) => {
         title: message
       });
       if (response.status === 403) {
-        await nuxtApp.runWithContext(() => navigateTo('/account/login'))
+        await navigateTo('/account/login');
       }
     }
   })
