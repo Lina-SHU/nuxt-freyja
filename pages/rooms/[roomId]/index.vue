@@ -23,7 +23,7 @@ const formatDate = (date) => {
 };
 
 const currentDate = new Date();
-
+const bookingStore = useBookingStore();
 const bookingDate = ref({
   date: {
     start: formatDate(currentDate),
@@ -42,7 +42,6 @@ const handleDateChange = (bookingInfo) => {
   daysCount.value = bookingInfo.daysCount;
 };
 
-const bookingStore = useBookingStore();
 const goToBooking = () => {
   // 檢查是否有填入入住跟退房日期
   if (!bookingDate.value.date.start || !bookingDate.value.date.end) {

@@ -24,6 +24,10 @@ const { data: newsList } = await useAPI('/home/news/');
 
 // 取得美味佳餚
 const { data: culinaryList } = await useAPI('/home/culinary/');
+
+// 取得房型
+const { data: roomList } = await useAPI('/rooms/');
+const roomInfo = roomList.value[0];
 </script>
 
 <template>
@@ -177,18 +181,18 @@ const { data: culinaryList } = await useAPI('/home/culinary/');
           :loop="true"
         >
           <swiper-slide
-            v-for="(num, index) in 5"
+            v-for="(image, index) in roomInfo?.imageUrlList"
             :key="index"
           >
             <picture>
               <source
-                srcset="@/assets/images/home-room-1.png"
+                :srcset="image"
                 media="(min-width:768px)"
               >
               <img
                 class="w-100"
-                src="@/assets/images/home-room-sm-1.png"
-                alt="room-a"
+                :src="image"
+                :alt="roomInfo?.name"
               >
             </picture>
           </swiper-slide>
@@ -196,13 +200,13 @@ const { data: culinaryList } = await useAPI('/home/culinary/');
         
         <div class="room-intro-content text-neutral-0">
           <h2 class="mb-2 mb-md-4 fw-bold">
-            尊爵雙人房
+            {{ roomInfo?.name }}
           </h2>
           <p class="mb-6 mb-md-10 fs-8 fs-md-7">
-            享受高級的住宿體驗，尊爵雙人房提供給您舒適寬敞的空間和精緻的裝潢。
+            {{ roomInfo?.description }}
           </p>
           <div class="mb-6 mb-md-10 fs-3 fw-bold">
-            NT$ 10,000
+            NT$ {{ roomInfo?.price }}
           </div>
           <NuxtLink
             to="/rooms"

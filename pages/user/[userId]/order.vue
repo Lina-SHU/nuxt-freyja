@@ -20,6 +20,7 @@ definePageMeta({
 });
 
 const orderHistorylist = ref([]);
+const orderShowHistorylist = ref([]);
 const orderShowlist = ref([]);
 // 取得訂單列表
 const { data: orderList } = await useAPI(`/orders`);
@@ -27,6 +28,7 @@ const setOrderList = (list) => {
   // 分最新及歷史訂單
   orderHistorylist.value  = list.filter((item) => item.status !== 0);
   orderShowlist.value = list.filter((item) => item.status === 0);
+  orderShowHistorylist.value = orderHistorylist.value.splice(0, 3);
 };
 setOrderList(orderList.value);
 
@@ -53,6 +55,10 @@ const cancelOrder = async () => {
   const { result } = await use$API(`/orders`);
   setOrderList(result);
   closeModal();
+};
+
+const showMore = () => {
+  orderShowHistorylist.value = orderHistorylist.value;
 };
 </script>
 
@@ -195,7 +201,7 @@ const cancelOrder = async () => {
           </h2>
           
           <template v-if="orderHistorylist && orderHistorylist.length > 0">
-            <template v-for="order in orderHistorylist" :key="order._id">
+            <template v-for="order in orderShowHistorylist" :key="order._id">
               <div class="d-flex flex-column flex-lg-row gap-6">
                 <img
                   class="img-fluid object-fit-cover rounded-3"
@@ -240,10 +246,11 @@ const cancelOrder = async () => {
             </template>   
     
             <button
-              v-if="orderHistorylist.length"
+              v-if="orderHistorylist.length !== orderShowHistorylist.length"
               class="btn btn-outline-primary-100 py-4 fw-bold"
               style="--bs-btn-hover-color: #fff"
               type="button"
+              @click="showMore"
             >
               查看更多
             </button>
