@@ -1,4 +1,8 @@
 <script setup>
+definePageMeta({
+    middleware: ['auth']
+});
+
 const { $swal } = useNuxtApp();
 import BookingLoading from '@/components/rooms/BookingLoading.vue';
 import dayjs from 'dayjs';

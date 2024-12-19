@@ -1,5 +1,8 @@
 <script setup>
-import { useRoute } from 'vue-router';
+definePageMeta({
+    middleware: ['auth']
+});
+
 import dayjs from 'dayjs';
 const locale = {
   name: 'zh-tw',

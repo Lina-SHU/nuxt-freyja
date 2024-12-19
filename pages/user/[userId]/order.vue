@@ -1,7 +1,7 @@
 <script setup>
-import { Icon } from '@iconify/vue';
-
-const roomId = 'a';  // for navigation demo
+definePageMeta({
+    middleware: ['auth']
+});
 </script>
 
 <template>

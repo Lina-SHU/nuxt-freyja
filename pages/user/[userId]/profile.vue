@@ -1,4 +1,8 @@
 <script setup>
+definePageMeta({
+    middleware: ['auth']
+});
+
 import dayjs from 'dayjs';
 const { $swal } = useNuxtApp();
 const route = useRoute();
@@ -120,6 +124,9 @@ const editProfile = async (value = {}, { resetForm }) => {
       }
     })
   });
+  userInfo.value.year = value['年'];
+  userInfo.value.month = value['月'];
+  userInfo.value.day = value['日'];
   isEditProfile.value = false;
 };
 </script>
