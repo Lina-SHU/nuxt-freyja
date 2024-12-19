@@ -1,8 +1,8 @@
 <script setup>
 const { $swal } = useNuxtApp();
-const loginRef = ref(null);
 const runtimeConfig = useRuntimeConfig();
 const accountStore = useAccountStore();
+const loginRef = ref(null);
 
 const onSubmit = async (value = {}, { resetForm }) => {
   const info = {
@@ -85,6 +85,7 @@ const onSubmit = async (value = {}, { resetForm }) => {
               v-bind="field"
               class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
               placeholder="請輸入密碼"
+              :autocomplete="true"
               :class="{ 'is-invalid': errors['密碼'] }"
             >
             <ErrorMessage name="密碼" class="invalid-feedback" />

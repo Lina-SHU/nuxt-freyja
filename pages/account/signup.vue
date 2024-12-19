@@ -1,4 +1,8 @@
 <script setup>
+const { $swal } = useNuxtApp();
+const runtimeConfig = useRuntimeConfig();
+const accountStore = useAccountStore();
+
 const isEmailAndPasswordValid = ref(false);
 const signupRef = ref(null);
 const agreementCheck = ref(null);
@@ -42,8 +46,7 @@ const dayList = computed(() => {
 });
 
 const onSubmit = async (value = {}, { resetForm }) => {
-  console.log(value);
-  const obj = {
+  const info = {
     name: value['姓名'],
     email: value['電子信箱'],
     password: value['密碼'],
@@ -53,7 +56,36 @@ const onSubmit = async (value = {}, { resetForm }) => {
       zipcode: value['行政區'],
       detail: value['詳細地址'],
     }
-  }
+  };
+  const { token, result } = await $fetch('/user/signup', {
+      method: 'post',
+      body: { ...info },
+      baseURL: runtimeConfig.public.apiBase,
+      onResponseError({ request, response, options }) {
+          const { message } = response._data;
+          $swal.fire({
+              position: "center",
+              icon: 'error',
+              title: message
+          });
+          resetForm();
+          isEmailAndPasswordValid.value = false;
+      }
+  });
+  const auth = useCookie('auth', {
+     path: '/'
+  });
+  auth.value = token;
+  accountStore.setAccountInfo(result);
+  $swal.fire({
+      position: "center",
+      icon: 'success',
+      title: '註冊成功！',
+      showConfirmButton: false,
+      timer: 1500
+  });
+  resetForm();
+  navigateTo(`/`);
 };
 </script>
 
@@ -137,12 +169,13 @@ const onSubmit = async (value = {}, { resetForm }) => {
               >
                 密碼
               </label>
-              <Field name="密碼" v-slot="{ field }" rules="required">
+              <Field name="密碼" v-slot="{ field }" rules="required|isMima">
                 <input
                   id="password"
                   type="password"
                   class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
                   placeholder="請輸入密碼"
+                  :autocomplete="true"
                   v-bind="field"
                   :class="{ 'is-invalid': errors['密碼'] }"
                 >
@@ -156,12 +189,13 @@ const onSubmit = async (value = {}, { resetForm }) => {
               >
                 確認密碼
               </label>
-              <Field name="確認密碼" v-slot="{ field }" rules="required">
+              <Field name="確認密碼" v-slot="{ field }" rules="required|isMima">
                 <input
                   id="confirmPassword"
                   type="password"
                   class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
                   placeholder="請再輸入一次密碼"
+                  :autocomplete="true"
                   v-bind="field"
                   :class="{ 'is-invalid': errors['確認密碼'] }"
                 >
@@ -229,6 +263,7 @@ const onSubmit = async (value = {}, { resetForm }) => {
               >
                 <div class="flex-fill">
                   <Field name="年" as="select" class="form-select p-4 text-neutral-80 fw-medium rounded-3" :class="{ 'is-invalid': errors['年'] }" rules="required" @change="resetMonDay">
+                    <option selected disabled value="">年</option>
                     <option
                       v-for="year in 65"
                       :key="year"
@@ -241,6 +276,7 @@ const onSubmit = async (value = {}, { resetForm }) => {
                 </div>
                 <div class="flex-fill">
                   <Field name="月" as="select" class="form-select p-4 text-neutral-80 fw-medium rounded-3" :class="{ 'is-invalid': errors['月'] }" rules="required" @change="resetDay">
+                    <option selected disabled value="">月</option>
                     <option
                       v-for="month in 12"
                       :key="month"
@@ -253,6 +289,7 @@ const onSubmit = async (value = {}, { resetForm }) => {
                 </div>
                 <div class="flex-fill">
                   <Field name="日" as="select" class="form-select p-4 text-neutral-80 fw-medium rounded-3" :class="{ 'is-invalid': errors['日'] }" rules="required">
+                    <option selected disabled value="">日</option>
                     <option
                       v-for="day in dayList"
                       :key="day"
