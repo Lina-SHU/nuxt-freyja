@@ -24,30 +24,37 @@ const townList = computed(() => {
   return selectedCity.districts;
 });
 
+const setUserInfo = (info) => {
+  const { zipcode } = info.address;
+  distinctList.forEach((city) => {
+    city.districts.forEach((town) => {
+      if (town.zip === zipcode.toString()) {
+        info.address.city = city.name;
+        info.address.county = town.name;
+      }
+    })
+  });
+  const birthday = new Date(info.birthday);
+  info.year = birthday.getFullYear();
+  info.month = birthday.getMonth() + 1;
+  info.day = birthday.getDate();
+};
+
 // 取得個人資料
-const { data: userInfo } = await useAPI('/user');
-const { zipcode } = userInfo.value.address;
-distinctList.forEach((city) => {
-  city.districts.forEach((town) => {
-    if (town.zip === zipcode.toString()) {
-      userInfo.value.address.city = city.name;
-      userInfo.value.address.county = town.name;
-    }
-  })
-});
-const birthday = new Date(userInfo.value.birthday);
-userInfo.value.year = birthday.getFullYear();
-userInfo.value.month = birthday.getMonth() + 1;
-userInfo.value.day = birthday.getDay();
+const userInfo = ref(null);
+const { data } = await useAPI('/user');
+userInfo.value = data.value;
+setUserInfo(userInfo.value);
+
 onMounted(() => {
   profileRef.value.setFieldValue('姓名', userInfo.value.name);
   profileRef.value.setFieldValue('手機號碼', userInfo.value.phone);
   profileRef.value.setFieldValue('縣市', userInfo.value.address.city);
   profileRef.value.setFieldValue('行政區', userInfo.value.address.zipcode);
   profileRef.value.setFieldValue('詳細地址', userInfo.value.address.detail);
-  profileRef.value.setFieldValue('年', birthday.getFullYear());
-  profileRef.value.setFieldValue('月', birthday.getMonth() + 1);
-  profileRef.value.setFieldValue('日', birthday.getDay());
+  profileRef.value.setFieldValue('年', new Date(userInfo.value.birthday).getFullYear());
+  profileRef.value.setFieldValue('月', new Date(userInfo.value.birthday).getMonth() + 1);
+  profileRef.value.setFieldValue('日', new Date(userInfo.value.birthday).getDate());
 });
 
 const resetMonDay = () => {
@@ -82,11 +89,11 @@ const changeMima = async (value = {}, { resetForm }) => {
     oldPassword: value['舊密碼'],
     newPassword: value['新密碼']
   }
-  const { data } = await useAPI('/user', {
+  const { status } = await use$API('/user', {
       body: mimaInfo,
       method: 'put'
   });
-  if (!data) return;
+  if (!status) return;
   $swal.fire({
       position: "center",
       icon: 'success',
@@ -105,28 +112,19 @@ const editProfile = async (value = {}, { resetForm }) => {
     birthday: `${value['年']}/${value['月']}/${value['日']}`,
     address: { zipcode: value['行政區'], detail: value['詳細地址'] }
   };
-  const { data } = await useAPI('/user', {
+  const { status, result } = await use$API('/user', {
       body: info,
       method: 'put'
   });
 
-  if (!data) return;
+  if (!status) return;
   $swal.fire({
       position: "center",
       icon: 'success',
       title: '更新成功！'
   });
-  distinctList.forEach((city) => {
-    city.districts.forEach((town) => {
-      if (town.zip === value['行政區']) {
-        userInfo.value.address.city = city.name;
-        userInfo.value.address.county = town.name;
-      }
-    })
-  });
-  userInfo.value.year = value['年'];
-  userInfo.value.month = value['月'];
-  userInfo.value.day = value['日'];
+  userInfo.value = result;
+  setUserInfo(userInfo.value);
   isEditProfile.value = false;
 };
 </script>
