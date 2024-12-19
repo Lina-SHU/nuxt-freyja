@@ -72,7 +72,6 @@ const { accountInfo } = storeToRefs(accountStore);
             >
         </picture>
     </main>
-    <AppFooter />
 </template>
 
 <style lang="scss" scoped>

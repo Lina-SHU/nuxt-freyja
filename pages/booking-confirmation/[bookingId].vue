@@ -17,11 +17,11 @@ const { bookingId } = route.params;
 
 // 取得訂單
 const { data: orderInfo } = await useAPI(`/orders/${bookingId}`);
-const { userInfo, roomId: roomInfo } = orderInfo.result;
+const { userInfo, roomId: roomInfo } = orderInfo.value;
 
 const daysCount = computed(() => {
-  const startDate = orderInfo.checkInDate;
-  const endDate = orderInfo.checkOutDate;
+  const startDate = orderInfo.value.checkInDate;
+  const endDate = orderInfo.value.checkOutDate;
 
   if (startDate === null || endDate === null) return 0;
 
@@ -62,12 +62,12 @@ const daysCount = computed(() => {
             <h2 class="mb-6 mb-md-10 text-neutral-0 fs-7 fs-md-5 fw-bold">
               立即查看您的訂單紀錄
             </h2>
-            <button
+            <NuxtLink
               class="btn btn-primary-100 px-md-15 py-4 text-neutral-0 fw-bold border-0 rounded-3"
-              type="button"
+              :to="`/user/id/order`"
             >
               前往我的訂單
-            </button>
+            </NuxtLink>
           </div>
 
           <hr class="my-10 my-md-20 opacity-100  text-neutral-40">
@@ -116,7 +116,7 @@ const daysCount = computed(() => {
             <img
               class="img-fluid rounded-3"
               :src="roomInfo?.imageUrl"
-              alt="room-a"
+              :alt="roomInfo?.name"
             >
 
             <section class="d-flex flex-column gap-6">
@@ -129,7 +129,7 @@ const daysCount = computed(() => {
                   style="width: 1px;height: 18px;"
                 />
                 <p class="mb-0">
-                  住宿人數：{{ orderInfo.peopleNum }} 位
+                  住宿人數：{{ orderInfo?.peopleNum }} 位
                 </p>
               </h3>
 
@@ -145,7 +145,7 @@ const daysCount = computed(() => {
               </div>
 
               <p class="mb-0 text-neutral-80 fs-8 fs-md-7 fw-bold">
-                NT$ {{ roomInfo.price * daysCount }}
+                NT$ {{ roomInfo?.price * daysCount }}
               </p>
             </section>
 
@@ -157,7 +157,7 @@ const daysCount = computed(() => {
               </h3>
               <ul class="d-flex flex-wrap row-gap-2 column-gap-10 p-6 mb-0 fs-8 fs-md-7 bg-neutral-0 border border-neutral-40 rounded-3 list-unstyled">
                 <li
-                  v-for="(layout, index) in roomInfo.layoutInfo"
+                  v-for="(layout, index) in roomInfo?.layoutInfo"
                   :key="index"
                   class="d-flex gap-2"
                 >
@@ -180,7 +180,7 @@ const daysCount = computed(() => {
               </h3>
               <ul class="d-flex flex-wrap row-gap-2 column-gap-10 p-6 mb-0 fs-8 fs-md-7 bg-neutral-0 border border-neutral-40 rounded-3 list-unstyled">
                 <li
-                  v-for="(layout, index) in roomInfo.layoutInfo"
+                  v-for="(layout, index) in roomInfo?.layoutInfo"
                   :key="index"
                   class="d-flex gap-2"
                 >
@@ -203,7 +203,7 @@ const daysCount = computed(() => {
               </h3>
               <ul class="d-flex flex-wrap row-gap-2 column-gap-10 p-6 mb-0 fs-8 fs-md-7 bg-neutral-0 border border-neutral-40 rounded-3 list-unstyled">
                 <li
-                  v-for="(amenity, index) in roomInfo.amenityInfo"
+                  v-for="(amenity, index) in roomInfo?.amenityInfo"
                   :key="index"
                   class="flex-item d-flex gap-2"
                 >
