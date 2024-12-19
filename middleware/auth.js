@@ -19,7 +19,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         return await navigateTo('/account/login');
     }
     try {
-        const res = await $fetch('/user/check', {
+        const res = await use$API('/user/check', {
             baseURL: runtimeConfig.public.apiBase,
             headers: { Authorization: auth.value }
         });

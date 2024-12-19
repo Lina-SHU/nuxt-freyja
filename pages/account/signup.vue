@@ -57,21 +57,11 @@ const onSubmit = async (value = {}, { resetForm }) => {
       detail: value['詳細地址'],
     }
   };
-  const { token, result } = await $fetch('/user/signup', {
+  const { token, result } = await use$API('/user/signup', {
       method: 'post',
-      body: { ...info },
-      baseURL: runtimeConfig.public.apiBase,
-      onResponseError({ request, response, options }) {
-          const { message } = response._data;
-          $swal.fire({
-              position: "center",
-              icon: 'error',
-              title: message
-          });
-          resetForm();
-          isEmailAndPasswordValid.value = false;
-      }
+      body: { ...info }
   });
+  isEmailAndPasswordValid.value = false;
   const auth = useCookie('auth', {
      path: '/'
   });

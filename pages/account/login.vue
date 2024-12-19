@@ -9,18 +9,9 @@ const onSubmit = async (value = {}, { resetForm }) => {
     email: value['電子信箱'],
     password: value['密碼']
   };
-  const { token, result } = await $fetch('/user/login', {
+  const { token, result } = await use$API('/user/login', {
       method: 'post',
-      body: { ...info },
-      baseURL: runtimeConfig.public.apiBase,
-      onResponseError({ request, response, options }) {
-          const { message } = response._data;
-          $swal.fire({
-              position: "center",
-              icon: 'error',
-              title: message
-          });
-      }
+      body: { ...info }
   });
   const auth = useCookie('auth', {
      path: '/'

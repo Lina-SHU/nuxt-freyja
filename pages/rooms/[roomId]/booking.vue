@@ -68,19 +68,18 @@ const onSubmit = async (value = {}, { resetForm }) => {
         }
       }
     };
-    const { data } = await useAPI('/orders', {
+    const { _id } = await use$API('/orders', {
       body: bookConfirmInfo,
       method: 'post'
     });
-    if (!data) return;
-
+    if (!_id) return;
     $swal.fire({
         position: "center",
         icon: 'success',
         title: '訂房成功！'
     });
+    await navigateTo(`/booking-confirmation/${_id}`);
     resetForm();
-    navigateTo(`/booking-confirmation/${data._id}`);
   } finally {
     isLoading.value = false;
   }
@@ -370,7 +369,7 @@ const onSubmit = async (value = {}, { resetForm }) => {
               <img
                 class="img-fluid rounded-3"
                 :src="roomInfo?.imageUrl"
-                alt="room-a"
+                :alt="roomInfo?.name"
               >
 
               <div>
