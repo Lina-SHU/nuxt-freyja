@@ -76,6 +76,10 @@ useSeoMeta({
   twitterDescription: () => `${roomInfo.value.description}`,
   twitterImage: () => `${roomInfo.value.imageUrl}`
 });
+
+const computedPrice = computed(() => {
+  return daysCount.value.value ? roomInfo.value.price * Number(daysCount.value.value) : roomInfo.value.price;
+});
 </script>
 
 <template>
@@ -376,8 +380,8 @@ useSeoMeta({
                 </div>
               </div>
               <h5 class="mb-0 text-primary-100 fw-bold">
-                NT$ 
-                <span v-currency="daysCount.value ? roomInfo.price * Number(daysCount.value) : roomInfo.price"></span>
+                NT$
+                <span v-currency="computedPrice"></span>
               </h5>
               <button
                 class="btn btn-primary-100 py-4 text-neutral-0 fw-bold rounded-3"
@@ -392,7 +396,7 @@ useSeoMeta({
       
       <div class="d-flex d-md-none justify-content-between align-items-center position-fixed bottom-0 w-100 p-3 bg-neutral-0">
         <template v-if="bookingDate.date.end === null">
-          <small class="text-neutral-80 fw-medium">ＮＴ$ <span v-currency="room.price"></span> / 晚</small>
+          <small class="text-neutral-80 fw-medium">ＮＴ$ <span v-currency="roomInfo?.price"></span> / 晚</small>
           <button
             class="btn btn-primary-100 px-12 py-4 text-neutral-0 fw-bold rounded-3"
             type="button"
