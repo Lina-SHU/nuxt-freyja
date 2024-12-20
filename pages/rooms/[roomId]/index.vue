@@ -86,7 +86,7 @@ useSeoMeta({
 });
 
 const computedPrice = computed(() => {
-  return daysCount.value.value ? roomInfo.value.price * Number(daysCount.value.value) : roomInfo.value.price;
+  return daysCount.value ? roomInfo.value.price * daysCount.value : roomInfo.value.price;
 });
 </script>
 

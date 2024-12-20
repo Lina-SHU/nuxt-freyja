@@ -91,12 +91,12 @@ const confirmDate = () => {
     emit('handleDateChange', {
       date: tempDate.date,
       people: bookingPeopleMobile,
-      daysCount
+      daysCount: daysCount.value
     });
   } else {
     emit('handleDateChange', {
       date: tempDate.date,
-      daysCount
+      daysCount: daysCount.value
     });
   }
 
