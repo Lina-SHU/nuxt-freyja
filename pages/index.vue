@@ -1,7 +1,6 @@
 <script setup>
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
-const runtimeConfig = useRuntimeConfig();
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';

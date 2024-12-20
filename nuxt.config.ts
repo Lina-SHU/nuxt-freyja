@@ -24,6 +24,8 @@ export default defineNuxtConfig({
     }
   },
   app: {
+    pageTransition: { name: 'page', mode: 'out-in' },
+    layoutTransition: { name: 'layout', mode: 'out-in' },
     head: {
       title: 'Freyja | 高雄頂級旅館 - 提供奢華住宿體驗',
       charset: 'utf-8',
@@ -46,7 +48,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBase: 'https://nuxr3.zeabur.app/api/v1'
+      apiUrl: 'https://nuxr3.zeabur.app/api/v1'
     }
   }
 })

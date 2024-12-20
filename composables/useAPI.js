@@ -2,7 +2,7 @@ export const useAPI = (url,options) => {
   const { $swal } = useNuxtApp();
   const runtimeConfig = useRuntimeConfig();
   return useFetch(url, {
-    baseURL: runtimeConfig.public.apiBase,
+    baseURL: runtimeConfig.public.apiUrl,
     transform: (response) => {
       const { result } = response;
       return result;

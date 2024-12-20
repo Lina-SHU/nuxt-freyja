@@ -3,7 +3,7 @@ export const use$API = (url,options) => {
   const runtimeConfig = useRuntimeConfig();
   const auth = useCookie('auth');
   const data = $fetch(url, {
-    baseURL: runtimeConfig.public.apiBase,
+    baseURL: runtimeConfig.public.apiUrl,
     headers: {
         Authorization: auth.value
     },

@@ -1,7 +1,11 @@
 <script setup>
+definePageMeta({
+  middleware: ['auth'],
+  layout: 'user'
+});
+
 import dayjs from 'dayjs';
 const { $swal, $showModal } = useNuxtApp();
-const runtimeConfig = useRuntimeConfig();
 const cancelModal = ref(null);
 onMounted(() => {
   cancelModal.value = $showModal(document.getElementById('cancelModal'));
@@ -15,9 +19,6 @@ const locale = {
   weekdaysMin: '日_一_二_三_四_五_六'.split('_'),
 };
 dayjs.locale('zh-tw', locale);
-definePageMeta({
-    middleware: ['auth']
-});
 
 const orderHistorylist = ref([]);
 const orderShowHistorylist = ref([]);
@@ -73,7 +74,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <NuxtLayout name="user">
+  <div>
     <div class="row gap-6 gap-md-0">
       <div class="col-12 col-md-7">
         <template v-if="orderShowlist && orderShowlist.length > 0">
@@ -309,7 +310,7 @@ useSeoMeta({
         </div>
       </div>
     </div>
-  </NuxtLayout>
+  </div>
 </template>
 
 <style lang="scss" scoped>

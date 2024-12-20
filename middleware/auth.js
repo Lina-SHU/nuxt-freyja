@@ -20,7 +20,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     }
     try {
         const res = await use$API('/user/check', {
-            baseURL: runtimeConfig.public.apiBase,
+            baseURL: runtimeConfig.public.apiUrl,
             headers: { Authorization: auth.value }
         });
         if (!res?.status) {
