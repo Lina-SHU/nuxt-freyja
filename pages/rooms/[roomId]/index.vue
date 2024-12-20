@@ -24,6 +24,7 @@ const formatDate = (date) => {
 
 const currentDate = new Date();
 const bookingStore = useBookingStore();
+const { bookingInfo } = storeToRefs(bookingStore);
 const bookingDate = ref({
   date: {
     start: formatDate(currentDate),
@@ -31,6 +32,13 @@ const bookingDate = ref({
   },
   minDate: new Date(),
   maxDate: new Date(currentDate.setFullYear(currentDate.getFullYear() + 1))
+});
+
+onMounted(() => {
+  bookingDate.value.date.start = bookingInfo.value.checkInDate || formatDate(currentDate);
+  bookingDate.value.date.end = bookingInfo.value.checkOutDate || null;
+  bookingPeople.value = bookingInfo.value.peopleNum || 1;
+  daysCount.value = bookingInfo.value.daysCount || 0;
 });
 
 const handleDateChange = (bookingInfo) => {

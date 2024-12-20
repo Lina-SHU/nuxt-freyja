@@ -64,7 +64,7 @@ const daysCount = computed(() => {
             </h2>
             <NuxtLink
               class="btn btn-primary-100 px-md-15 py-4 text-neutral-0 fw-bold border-0 rounded-3"
-              :to="`/user/id/order`"
+              to="/user/id/order"
             >
               前往我的訂單
             </NuxtLink>

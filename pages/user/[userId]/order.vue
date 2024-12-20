@@ -29,7 +29,7 @@ const setOrderList = (list) => {
   // 分最新及歷史訂單
   orderHistorylist.value  = list.filter((item) => item.status !== 0);
   orderShowlist.value = list.filter((item) => item.status === 0);
-  orderShowHistorylist.value = orderHistorylist.value.splice(0, 3);
+  orderShowHistorylist.value = orderHistorylist.value.length > 3 ? orderHistorylist.value.splice(0, 3) : orderHistorylist.value;
 };
 setOrderList(orderList.value);
 
