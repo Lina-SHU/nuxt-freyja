@@ -145,7 +145,7 @@ const daysCount = computed(() => {
               </div>
 
               <p class="mb-0 text-neutral-80 fs-8 fs-md-7 fw-bold">
-                NT$ {{ roomInfo?.price * daysCount }}
+                NT$ <span v-currency="roomInfo?.price * daysCount"></span>
               </p>
             </section>
 

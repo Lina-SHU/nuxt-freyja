@@ -124,7 +124,7 @@ useSeoMeta({
                 </div>
       
                 <p class="mb-0 text-neutral-80 fs-8 fs-md-7 fw-bold">
-                  NT$ {{ newOrder?.roomId?.price * daysCount(newOrder?.checkInDate, newOrder?.checkOutDate) }}
+                  NT$ <span v-currency="newOrder?.roomId?.price * daysCount(newOrder?.checkInDate, newOrder?.checkOutDate)"></span>
                 </p>
               </section>
       
@@ -249,7 +249,7 @@ useSeoMeta({
                     </p>
                   </div>
                   <p class="mb-0 text-neutral-80 fs-8 fs-md-7 fw-bold">
-                    NT$ {{ order?.roomId?.price * daysCount(order?.checkInDate, order?.checkOutDate) }}
+                    NT$ <span v-currency="order?.roomId?.price * daysCount(order?.checkInDate, order?.checkOutDate)"></span>
                   </p>
                 </section>
               </div>

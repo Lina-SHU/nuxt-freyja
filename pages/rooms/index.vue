@@ -155,7 +155,7 @@ useSeoMeta({
                   <div class="deco-line w-100 mb-6 mb-md-10" />
                   <div class="d-flex justify-content-between align-items-center fs-7 fs-md-5 text-primary-100">
                     <p class="mb-0 fw-bold">
-                      NT$ {{ room.price }}
+                      NT$ <span v-currency="room.price"></span>
                     </p>
                     <NuxtLink
                       :to="`/rooms/${room._id}`"

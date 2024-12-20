@@ -379,7 +379,7 @@ const onSubmit = async (value = {}, { resetForm }) => {
                 </h2>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <div class="d-flex align-items-center text-neutral-100 fw-medium">
-                    <span>NT$ {{ roomInfo.price }}</span>
+                    <span>NT$ <span v-currency="room.price"></span></span>
                     <Icon
                       class="ms-2 me-1 text-neutral-80"
                       icon="material-symbols:close"
@@ -387,7 +387,7 @@ const onSubmit = async (value = {}, { resetForm }) => {
                     <span class="text-neutral-80">{{ bookingInfo?.daysCount }} 晚</span>
                   </div>
                   <span class="fw-medium">
-                    NT$ {{ roomInfo.price * bookingInfo?.daysCount }}
+                    NT$ <span v-currency="roomInfo.price * bookingInfo?.daysCount"></span>
                   </span>
                 </div>
                 <!-- <div class="d-flex justify-content-between align-items-center fw-medium">

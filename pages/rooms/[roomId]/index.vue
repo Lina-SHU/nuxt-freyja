@@ -376,7 +376,8 @@ useSeoMeta({
                 </div>
               </div>
               <h5 class="mb-0 text-primary-100 fw-bold">
-                NT$ {{ daysCount.value ? roomInfo.price * Number(daysCount.value) : roomInfo.price}}
+                NT$ 
+                <span v-currency="daysCount.value ? roomInfo.price * Number(daysCount.value) : roomInfo.price"></span>
               </h5>
               <button
                 class="btn btn-primary-100 py-4 text-neutral-0 fw-bold rounded-3"
@@ -391,7 +392,7 @@ useSeoMeta({
       
       <div class="d-flex d-md-none justify-content-between align-items-center position-fixed bottom-0 w-100 p-3 bg-neutral-0">
         <template v-if="bookingDate.date.end === null">
-          <small class="text-neutral-80 fw-medium">ＮＴ$ {{ roomInfo.price }} / 晚</small>
+          <small class="text-neutral-80 fw-medium">ＮＴ$ <span v-currency="room.price"></span> / 晚</small>
           <button
             class="btn btn-primary-100 px-12 py-4 text-neutral-0 fw-bold rounded-3"
             type="button"
@@ -403,7 +404,7 @@ useSeoMeta({
 
         <template v-else>
           <div class="d-flex flex-column gap-1">
-            <small class="text-neutral-80 fw-medium">ＮＴ$ {{ roomInfo.price * Number(daysCount.value) }} / {{ daysCount }} 晚 / {{ bookingPeople }} 人</small>
+            <small class="text-neutral-80 fw-medium">ＮＴ$ <span v-currency="roomInfo.price * Number(daysCount.value)"></span> / {{ daysCount }} 晚 / {{ bookingPeople }} 人</small>
             <span class="text-neutral fs-9 fw-medium text-decoration-underline">{{ daysFormatOnMobile(bookingDate.date?.start) }} - {{ daysFormatOnMobile(bookingDate.date?.end) }}</span>
           </div>
           <button

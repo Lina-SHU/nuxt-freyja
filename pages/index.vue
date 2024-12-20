@@ -205,7 +205,7 @@ const roomInfo = roomList.value[0];
             {{ roomInfo?.description }}
           </p>
           <div class="mb-6 mb-md-10 fs-3 fw-bold">
-            NT$ {{ roomInfo?.price }}
+            NT$ <span v-currency="roomInfo?.price"></span>
           </div>
           <NuxtLink
             to="/rooms"
