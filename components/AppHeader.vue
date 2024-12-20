@@ -79,7 +79,7 @@ const logout = () => {
                 客房旅宿
               </NuxtLink>
             </li>
-            <li class="d-none d-md-block nav-item">
+            <li v-if="auth" class="nav-item">
               <div class="btn-group">
                 <button
                   type="button"
@@ -114,7 +114,7 @@ const logout = () => {
                 </ul>
               </div>
             </li>
-            <li class="d-md-none nav-item">
+            <li v-else class="nav-item">
               <NuxtLink
                 to="/account/login"
                 class="nav-link p-4 text-neutral-0"
