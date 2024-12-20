@@ -109,7 +109,7 @@ useSeoMeta({
                         class="w-100 object-fit-cover"
                         :src="image"
                         loading="lazy"
-                        :alt="`room-a-${index}`"
+                        :alt="`room-${index}`"
                       >
                     </picture>
                   </swiper-slide>

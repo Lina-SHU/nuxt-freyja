@@ -93,7 +93,7 @@ const computedPrice = computed(() => {
             <img
               class="w-100"
               :src="roomInfo.imageUrl"
-              alt="room-a-1"
+              :alt="roomInfo.name"
             >
           </div>
           <div
@@ -107,37 +107,37 @@ const computedPrice = computed(() => {
               <img
                 class="w-50"
                 :src="roomInfo.imageUrlList[num]"
-                :alt="`room-a-${num}`"
+                :alt="`room-${num}`"
               >
               <img
                 class="w-50"
                 :src="roomInfo.imageUrlList[num + 1]"
-                :alt="`room-a-${num + 1}`"
+                :alt="`room-${num + 1}`"
               >
             </div>
           </div>
         </div>
-        <button
+        <!-- <button
           class="position-absolute btn btn-primary-10 px-8 py-4 me-3 text-primary-100 border-primary-100 fw-bold rounded-3"
           style="bottom: 40px; right: 40px;"
           type="button"
         >
           看更多
-        </button>
+        </button> -->
       </div>
       <div class="d-md-none position-relative">
         <img
           class="img-fluid"
           :src="roomInfo.imageUrl"
-          alt="room-a-1"
+          :alt="roomInfo.name"
         >
-        <button
+        <!-- <button
           class="position-absolute btn btn-primary-10 px-8 py-4 text-primary-100 border-primary-100 fw-bold rounded-3"
           style="bottom: 23px; right: 12px;"
           type="button"
         >
           看更多
-        </button>
+        </button> -->
       </div>
     </section>
 
