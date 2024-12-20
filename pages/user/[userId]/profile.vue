@@ -127,6 +127,16 @@ const editProfile = async (value = {}, { resetForm }) => {
   setUserInfo(userInfo.value);
   isEditProfile.value = false;
 };
+
+useSeoMeta({
+  title: 'Freyja | 會員資料',
+  description: '填妥 Freyja 會員資料，不定期享 Freyja 提供的各項優惠，享受獨特的住宿體驗！',
+  ogTitle: 'Freyja | 會員資料',
+  ogDescription: '填妥 Freyja 會員資料，不定期享 Freyja 提供的各項優惠，享受獨特的住宿體驗！',
+  twitterCard: 'summary_large_image',
+  twitterTitle: 'Freyja | 會員資料',
+  twitterDescription: '填妥 Freyja 會員資料，不定期享 Freyja 提供的各項優惠，享受獨特的住宿體驗！'
+});
 </script>
 
 <template>

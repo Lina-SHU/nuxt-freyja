@@ -10,6 +10,16 @@ const modules = ref([Autoplay, Navigation, Pagination]);
 
 // 取得房間列表
 const { data: roomList } = await useAPI('/rooms/');
+
+useSeoMeta({
+  title: 'Freyja | 房型列表',
+  description: '探索 Freyja 頂級房型，從景觀尊榮家庭房到尊爵雙人房，享受絕美市景與舒適空間。立即預訂，享受獨特的住宿體驗！',
+  ogTitle: 'Freyja | 房型列表',
+  ogDescription: '探索 Freyja 的高雄頂級房型，從景觀尊榮家庭房到尊爵雙人房，享受絕美市景與舒適空間。立即預訂，享受獨特的住宿體驗！',
+  twitterCard: 'summary_large_image',
+  twitterTitle: 'Freyja | 高雄最頂級的旅館',
+  twitterDescription: '探索 Freyja 的高雄頂級房型，從景觀尊榮家庭房到尊爵雙人房，享受絕美市景與舒適空間。立即預訂，享受獨特的住宿體驗！'
+});
 </script>
 
 <template>

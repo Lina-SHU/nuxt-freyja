@@ -77,6 +77,16 @@ const onSubmit = async (value = {}, { resetForm }) => {
   resetForm();
   navigateTo(`/`);
 };
+
+useSeoMeta({
+  title: 'Freyja | 歡迎註冊',
+  description: '加入 Freyja 成為會員，絕美市景與舒適空間即可立即預訂，享受獨特的住宿體驗！',
+  ogTitle: 'Freyja | 歡迎註冊',
+  ogDescription: '加入 Freyja 成為會員，絕美市景與舒適空間即可立即預訂。享受獨特的住宿體驗！',
+  twitterCard: 'summary_large_image',
+  twitterTitle: 'Freyja | 歡迎註冊',
+  twitterDescription: '加入 Freyja 成為會員，絕美市景與舒適空間即可立即預訂。享受獨特的住宿體驗！'
+});
 </script>
 
 <template>

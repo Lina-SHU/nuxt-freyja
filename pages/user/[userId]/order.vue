@@ -60,6 +60,16 @@ const cancelOrder = async () => {
 const showMore = () => {
   orderShowHistorylist.value = orderHistorylist.value;
 };
+
+useSeoMeta({
+  title: 'Freyja | 訂單資料',
+  description: 'Freyja 訂單，提醒您即將到來的期待，享受獨特的住宿體驗！',
+  ogTitle: 'Freyja | 訂單資料',
+  ogDescription: 'Freyja 訂單，提醒您即將到來的期待，享受獨特的住宿體驗！',
+  twitterCard: 'summary_large_image',
+  twitterTitle: 'Freyja | 訂單資料',
+  twitterDescription: 'Freyja 訂單，提醒您即將到來的期待，享受獨特的住宿體驗！'
+});
 </script>
 
 <template>

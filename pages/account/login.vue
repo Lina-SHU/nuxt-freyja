@@ -28,6 +28,16 @@ const onSubmit = async (value = {}, { resetForm }) => {
   resetForm();
   navigateTo(`/`);
 };
+
+useSeoMeta({
+  title: 'Freyja | 歡迎登入',
+  description: '登入 Freyja，絕美市景與舒適空間即可立即預訂，享受獨特的住宿體驗！',
+  ogTitle: 'Freyja | 歡迎登入',
+  ogDescription: '登入 Freyja，絕美市景與舒適空間即可立即預訂。享受獨特的住宿體驗！',
+  twitterCard: 'summary_large_image',
+  twitterTitle: 'Freyja | 歡迎登入',
+  twitterDescription: '登入 Freyja，絕美市景與舒適空間即可立即預訂。享受獨特的住宿體驗！'
+});
 </script>
 
 <template>

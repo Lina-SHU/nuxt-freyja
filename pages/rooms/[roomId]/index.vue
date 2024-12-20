@@ -61,6 +61,21 @@ const goToBooking = () => {
   });
   navigateTo(`/rooms/${route.params.roomId}/booking`);
 };
+
+// meta
+useSeoMeta({
+  title: roomInfo.value.name,
+  titleTemplate: (title) => `Freyja | ${title}`,
+  description: () => roomInfo.value.description,
+  ogTitle: () => `Freyja | ${roomInfo.value.name}`,
+  ogDescription: () => `${roomInfo.value.description}`,
+  ogImage: () => `${roomInfo.value.imageUrl}`,
+  ogUrl: () => `https://freyja.travel.com.tw/room/${roomInfo._id}`,
+  twitterCard: 'summary_large_image',
+  twitterTitle: () => `Freyja | ${roomInfo.value.name}`,
+  twitterDescription: () => `${roomInfo.value.description}`,
+  twitterImage: () => `${roomInfo.value.imageUrl}`
+});
 </script>
 
 <template>
