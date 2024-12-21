@@ -1,6 +1,6 @@
 <script setup>
 const route = useRoute();
-const transparentBgRoute = ['home', 'rooms'];
+const transparentBgRoute = ['index', 'rooms'];
 
 const isTransparentRoute = computed(() => transparentBgRoute.includes(route.name));
 const auth = useCookie('auth');
@@ -80,10 +80,10 @@ const logout = () => {
               </NuxtLink>
             </li>
             <li v-if="auth" class="nav-item">
-              <div class="btn-group">
+              <div class="btn-group d-block d-md-flex">
                 <button
                   type="button"
-                  class="nav-link d-flex gap-2 p-4 text-neutral-0"
+                  class="nav-link d-flex gap-2 p-4 text-neutral-0 m-auto"
                   data-bs-toggle="dropdown"
                 >
                   <Icon 
@@ -93,7 +93,7 @@ const logout = () => {
                   {{ accountInfo?.name }}
                 </button>
                 <ul
-                  class="dropdown-menu py-3 overflow-hidden"
+                  class="dropdown-menu py-3 overflow-hidden text-center text-md-start"
                   style="right: 0; left: auto; border-radius: 20px;"
                 >
                   <li>
