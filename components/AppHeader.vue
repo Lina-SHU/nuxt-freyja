@@ -79,11 +79,11 @@ const logout = () => {
                 客房旅宿
               </NuxtLink>
             </li>
-            <li v-if="auth" class="nav-item">
-              <div class="btn-group d-block d-md-flex">
+            <li v-if="auth" class="nav-item d-none d-md-block">
+              <div class="btn-group d-flex">
                 <button
                   type="button"
-                  class="nav-link d-flex gap-2 p-4 text-neutral-0 m-auto"
+                  class="nav-link d-flex align-items-center gap-2 p-4 text-neutral-0 m-auto"
                   data-bs-toggle="dropdown"
                 >
                   <Icon 
@@ -101,7 +101,7 @@ const logout = () => {
                       :to="`/user/${accountInfo?._id}/profile`"
                       class="dropdown-item px-6 py-4"
                     >
-                    我的帳戶
+                      我的帳戶
                     </NuxtLink>
                   </li>
                   <li>
@@ -113,6 +113,27 @@ const logout = () => {
                   </li>
                 </ul>
               </div>
+            </li>
+            <li v-if="auth" class="nav-item d-md-none">
+              <NuxtLink
+                  :to="`/user/${accountInfo?._id}/profile`"
+                  class="nav-link p-4 text-neutral-0 d-flex align-items-center justify-content-center"
+                >
+                  <Icon 
+                    class="fs-5"
+                    icon="mdi:account-circle-outline"
+                  />
+                  <span class="ps-2 lh-1">{{ accountInfo?.name }}</span>
+                </NuxtLink>
+            </li>
+            <li v-if="auth" class="nav-item d-md-none">
+              <a
+                  href="#"
+                  @click.prevent="logout"
+                  class="nav-link p-4 text-neutral-0"
+                >
+                  登出
+              </a>
             </li>
             <li v-else class="nav-item">
               <NuxtLink
