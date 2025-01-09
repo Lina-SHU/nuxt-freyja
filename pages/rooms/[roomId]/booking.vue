@@ -74,11 +74,6 @@ const onSubmit = async (value = {}, { resetForm }) => {
     });
 
     if (!result._id) return;
-    $swal.fire({
-        position: "center",
-        icon: 'success',
-        title: '訂房成功！'
-    });
     await navigateTo(`/booking-confirmation/${result._id}`);
     resetForm();
   } finally {
