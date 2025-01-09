@@ -15,6 +15,10 @@ dayjs.locale('zh-tw', locale);
 const route = useRoute();
 const { bookingId } = route.params;
 
+// 取得使用者 ID
+const accountStore = useAccountStore();
+const { accountInfo } = storeToRefs(accountStore);
+
 // 取得訂單
 const { data: orderInfo } = await useAPI(`/orders/${bookingId}`);
 const { userInfo, roomId: roomInfo } = orderInfo.value;
@@ -64,7 +68,7 @@ const daysCount = computed(() => {
             </h2>
             <NuxtLink
               class="btn btn-primary-100 px-md-15 py-4 text-neutral-0 fw-bold border-0 rounded-3"
-              to="/user/id/order"
+              :to="`/user/${accountInfo?._id}/order`"
             >
               前往我的訂單
             </NuxtLink>
