@@ -7,7 +7,7 @@ definePageMeta({
 import dayjs from 'dayjs';
 const { $swal } = useNuxtApp();
 const route = useRoute();
-const changeMimaRef = ref(null);
+const changePasswordRef = ref(null);
 const profileRef = ref(null);
 
 const isEditPassword = ref(false);
@@ -84,14 +84,14 @@ const dayList = computed(() => {
   }
 });
 // 修改密碼
-const changeMima = async (value = {}, { resetForm }) => {
-  const mimaInfo = {
+const changePassword = async (value = {}, { resetForm }) => {
+  const passwordInfo = {
     userId: route.params.userId,
     oldPassword: value['舊密碼'],
     newPassword: value['新密碼']
   }
   const { status } = await use$API('/user', {
-      body: mimaInfo,
+      body: passwordInfo,
       method: 'put'
   });
   if (!status) return;
@@ -185,13 +185,13 @@ useSeoMeta({
             class="d-flex flex-column gap-4 gap-md-6"
             :class="{'d-none': !isEditPassword}"
           >
-            <Form @submit="changeMima" ref="changeMimaRef" v-slot="{ errors }">
+            <Form @submit="changePassword" ref="changePasswordRef" v-slot="{ errors }">
               <div class="mb-3">
                 <label
                   for="oldPassword"
                   class="form-label fs-8 fs-md-7 fw-bold"
                 >舊密碼</label>
-                <Field name="舊密碼" v-slot="{ field }" rules="required|isMima">
+                <Field name="舊密碼" v-slot="{ field }" rules="required|isPassword">
                   <input
                     id="oldPassword"
                     type="password"
@@ -210,7 +210,7 @@ useSeoMeta({
                   for="newPassword"
                   class="form-label fs-8 fs-md-7 fw-bold"
                 >新密碼</label>
-                <Field name="新密碼" v-slot="{ field }" rules="required|isMima">
+                <Field name="新密碼" v-slot="{ field }" rules="required|isPassword">
                   <input
                     id="newPassword"
                     type="password"
@@ -229,7 +229,7 @@ useSeoMeta({
                   for="confirmPassword"
                   class="form-label fs-8 fs-md-7 fw-bold"
                 >確認新密碼</label>
-                <Field name="確認新密碼" v-slot="{ field }" rules="required|isMima">
+                <Field name="確認新密碼" v-slot="{ field }" rules="required|isPassword">
                   <input
                     id="confirmPassword"
                     type="password"

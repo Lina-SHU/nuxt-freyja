@@ -81,7 +81,7 @@ useSeoMeta({
         >
           密碼
         </label>
-        <Field name="密碼" v-slot="{ field }" rules="required|isMima">
+        <Field name="密碼" v-slot="{ field }" rules="required|isPassword">
           <input
             id="password"
             type="password"

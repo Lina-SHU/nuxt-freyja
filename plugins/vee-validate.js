@@ -20,7 +20,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     });
 
     // 自訂驗證規則(密碼)
-    defineRule("isMima", (value) => {
+    defineRule("isPassword", (value) => {
         const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
         return (
           regex.test(value) ||
