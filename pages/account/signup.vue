@@ -47,11 +47,30 @@ const dayList = computed(() => {
   }
 });
 
+const account = ref({});
+const toStep2 = (value = {}) => {
+  if (value['密碼'] !== value['確認密碼']) {
+    $swal.fire({
+      position: "center",
+      icon: 'error',
+      title: '密碼不一致',
+      showConfirmButton: false,
+      timer: 1500
+    });
+    return;
+  }
+  isEmailAndPasswordValid.value = true;
+  account.value = {
+    email: value['電子信箱'],
+    password: value['密碼']
+  };
+};
+
 const onSubmit = async (value = {}, { resetForm }) => {
   const info = {
     name: value['姓名'],
-    email: value['電子信箱'],
-    password: value['密碼'],
+    email: account.value.email,
+    password: account.value.password,
     phone: value['手機號碼'],
     birthday: `${value['年']}/${value['月']}/${value['日']}`,
     address: {
@@ -139,7 +158,7 @@ useSeoMeta({
     </div>
 
     <div class="mb-4">
-      <Form @submit="onSubmit" ref="signupRef" v-slot="{ errors }">
+      <Form @submit="toStep2" ref="signupRef" v-slot="{ errors }">
         <div
           :class="{'d-none': isEmailAndPasswordValid}"
           class="mb-4"
@@ -170,7 +189,7 @@ useSeoMeta({
             >
               密碼
             </label>
-            <Field name="密碼" v-slot="{ field }" rules="required|isMima">
+            <Field name="密碼" v-slot="{ field }" rules="required|isPassword">
               <input
                 id="password"
                 type="password"
@@ -190,7 +209,7 @@ useSeoMeta({
             >
               確認密碼
             </label>
-            <Field name="確認密碼" v-slot="{ field }" rules="required|isMima">
+            <Field name="確認密碼" v-slot="{ field }" rules="required|isPassword">
               <input
                 id="confirmPassword"
                 type="password"
@@ -205,12 +224,13 @@ useSeoMeta({
           </div>
           <button
             class="btn btn-neutral-40 w-100 py-4 text-neutral-60 fw-bold"
-            type="button"
-            @click="isEmailAndPasswordValid = true"
+            type="submit"
           >
             下一步
           </button>
         </div>
+      </Form>
+      <Form @submit="onSubmit" ref="signupRef" v-slot="{ errors }">
         <div
           :class="{'d-none': !isEmailAndPasswordValid}"
           class="mb-4"
@@ -354,12 +374,25 @@ useSeoMeta({
               我已閱讀並同意本網站個資使用規範
             </label>
           </div>
-          <button
-            class="btn btn-primary-100 w-100 py-4 text-neutral-0 fw-bold"
-            type="submit"
-          >
-            完成註冊
-          </button>
+          <div class="row flex-row-reverse">
+            <div class="col-12 col-md-6 mb-4 mb-md-0">
+              <button
+                class="btn btn-primary-100 w-100 py-4 text-neutral-0 fw-bold"
+                type="submit"
+              >
+                完成註冊
+              </button>
+            </div>
+            <div class="col-12 col-md-6">
+              <button
+                class="btn btn-neutral-40 w-100 py-4 text-neutral-60 fw-bold"
+                type="button"
+                @click="isEmailAndPasswordValid = false"
+              >
+                上一步
+              </button>
+            </div>
+          </div>
         </div>
       </Form>
     </div>
